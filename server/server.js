@@ -64,10 +64,14 @@ app.post('/register', async (request, response) => {
 });
 
 app.delete('/employee/:id', async (request, response) => {
-  console.log(request.params); // {id: 41}
   let sql = `DELETE FROM employees WHERE user_id=${request.params.id} RETURNING *`;
 
   try {
+    // Delete from database
+    await db.query(sql);
+
+    // Retreive updated employees list
+    sql = 'SELECT * FROM employees;';
     let { rows } = await db.query(sql);
 
     response.json(rows);
@@ -102,7 +106,6 @@ app.post('/query', async (request, response) => {
       if (username == 'admin') {
         db.setNewPool('admin');
         sql = `SELECT * FROM employees`;
-        console.log('Admin logged in');
       } else {
         db.setNewPool('client');
         sql = `SELECT * FROM employees WHERE username='${username}' AND password='${dbPassword}'`;

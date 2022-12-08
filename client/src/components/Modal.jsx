@@ -56,7 +56,7 @@ const Modal = () => {
             </label>
             <input
               id='reg-password'
-              type='text'
+              type='password'
               className='form-control'
               value={password}
               onChange={e => setPassword(e.target.value)}
